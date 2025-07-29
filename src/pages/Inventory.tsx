@@ -172,17 +172,22 @@ const Inventory: React.FC = () => {
 
       <div>
         <h3 className="font-semibold mb-3">Make</h3>
-        <Select value={filters.make || ''} onValueChange={(value) => setFilters({ ...filters, make: value || undefined })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Any Make" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">Any Make</SelectItem>
-            {carBrands.map((brand) => (
-              <SelectItem key={brand} value={brand}>{brand}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <Select value={filters.make || 'any'} onValueChange={(value) => {
+        setFilters({ ...filters, make: value === 'any' ? undefined : value });
+      }}>
+        <SelectTrigger>
+          <SelectValue placeholder="Any Make" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="any">Any Make</SelectItem>
+          {carBrands.map((brand) => (
+            <SelectItem key={brand} value={brand}>
+              {brand}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
       </div>
 
       <Separator />
