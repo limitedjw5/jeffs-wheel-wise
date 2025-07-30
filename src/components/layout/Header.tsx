@@ -27,7 +27,6 @@ const Header: React.FC = () => {
     { name: 'AI Recommend', href: '/ai-recommend' },
     { name: 'Loan Calculator', href: '/loan-calculator' },
     { name: 'About Founder', href: '/founder' },
-    { name: 'Team', href: '/team' },
   ];
 
   const isActive = (path: string) => {
@@ -124,41 +123,31 @@ const Header: React.FC = () => {
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>
 
-            {/* User Menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="hover-lift">
-                  <User className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {user ? (
-                  <>
-                    <DropdownMenuItem disabled>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{user.email}</span>
-                        <span className="text-xs text-muted-foreground">
-                          {isAdmin ? 'Administrator' : 'Customer'}
-                        </span>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={handleLogout}>
-                      Sign Out
-                    </DropdownMenuItem>
-                  </>
-                ) : (
-                  <>
-                    <DropdownMenuItem asChild>
-                      <Link to="/auth?mode=signin">Sign In</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/auth?mode=signup">Sign Up</Link>
-                    </DropdownMenuItem>
-                  </>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* Admin Access */}
+            {isAdmin && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="hover-lift">
+                    <User className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem disabled>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{user?.email}</span>
+                      <span className="text-xs text-muted-foreground">Administrator</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/admin">Admin Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
 
             {/* Mobile Menu Button */}
             <Button
