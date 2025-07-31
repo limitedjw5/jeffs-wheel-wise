@@ -26,9 +26,9 @@ export const mockCars: Car[] = [
     financingAvailable: true,
     media: {
       photos: [
-        'https://i.ibb.co/VpzYnQz/toyota-camry-1.jpg',
-        'https://i.ibb.co/yqxGKH9/toyota-camry-2.jpg',
-        'https://i.ibb.co/kDrPtYh/toyota-camry-3.jpg'
+        'https://www.toyota.com/imgix/responsive/images/mlp/colorizer/2023/camry/white/1.png',
+        'https://www.toyota.com/imgix/responsive/images/mlp/colorizer/2023/camry/white/2.png',
+        'https://www.toyota.com/imgix/responsive/images/mlp/colorizer/2023/camry/white/3.png'
       ],
       videos: [],
       view360: 'https://example.com/360-view-camry'
@@ -70,8 +70,8 @@ export const mockCars: Car[] = [
     financingAvailable: true,
     media: {
       photos: [
-        'https://i.ibb.co/2cPR8Kx/honda-accord-1.jpg',
-        'https://i.ibb.co/8N7gH3x/honda-accord-2.jpg'
+        'https://automobiles.honda.com/-/media/Honda-Automobiles/Vehicles/2023/Accord/Sport/Exterior/01-Exterior/2023-accord-sport-exterior-01-1600x900.png',
+        'https://automobiles.honda.com/-/media/Honda-Automobiles/Vehicles/2023/Accord/Sport/Exterior/02-Exterior/2023-accord-sport-exterior-02-1600x900.png'
       ],
       videos: [],
     },
@@ -113,9 +113,9 @@ export const mockCars: Car[] = [
     financingAvailable: true,
     media: {
       photos: [
-        'https://i.ibb.co/9WxP2Hj/mercedes-c-class-1.jpg',
-        'https://i.ibb.co/VWq8P3x/mercedes-c-class-2.jpg',
-        'https://i.ibb.co/HNzQp4K/mercedes-c-class-3.jpg'
+        'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my23/c-class/sedan/class-page/2023-C-CLASS-SEDAN-CLASS-NAV-D.png',
+        'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my23/c-class/sedan/class-page/2023-C-CLASS-SEDAN-CLASS-NAV-A.png',
+        'https://www.mbusa.com/content/dam/mb-nafta/us/myco/my23/c-class/sedan/class-page/2023-C-CLASS-SEDAN-CLASS-NAV-B.png'
       ],
       videos: [],
     },
@@ -156,8 +156,8 @@ export const mockCars: Car[] = [
     financingAvailable: true,
     media: {
       photos: [
-        'https://i.ibb.co/dGPqx8w/bmw-x5-1.jpg',
-        'https://i.ibb.co/2YzpR4K/bmw-x5-2.jpg'
+        'https://www.bmwusa.com/content/dam/bmw/common/all-models/x-series/x5/2023/highlights/bmw-x5-highlights-desktop-01.jpg',
+        'https://www.bmwusa.com/content/dam/bmw/common/all-models/x-series/x5/2023/highlights/bmw-x5-highlights-desktop-02.jpg'
       ],
       videos: [],
     },
@@ -198,9 +198,9 @@ export const mockCars: Car[] = [
     financingAvailable: true,
     media: {
       photos: [
-        'https://i.ibb.co/5FnPH3K/lexus-es-1.jpg',
-        'https://i.ibb.co/TqDR4Kx/lexus-es-2.jpg',
-        'https://i.ibb.co/sJQ2rKT/lexus-es-3.jpg'
+        'https://www.lexus.com/content/dam/lexus/vdp/ES/23ZR/1.png',
+        'https://www.lexus.com/content/dam/lexus/vdp/ES/23ZR/2.png',
+        'https://www.lexus.com/content/dam/lexus/vdp/ES/23ZR/3.png'
       ],
       videos: [],
     },
@@ -241,8 +241,8 @@ export const mockCars: Car[] = [
     financingAvailable: true,
     media: {
       photos: [
-        'https://i.ibb.co/QDW7x3K/ford-explorer-1.jpg',
-        'https://i.ibb.co/8Y3Qp9w/ford-explorer-2.jpg'
+        'https://www.ford.com/cmslibs/content/dam/vdm_ford/live/en_us/ford/nameplate/explorer/2023/collections/3-2/23_FRD_EXP_100122_42778.jpg',
+        'https://www.ford.com/cmslibs/content/dam/vdm_ford/live/en_us/ford/nameplate/explorer/2023/collections/3-2/23_FRD_EXP_100122_42780.jpg'
       ],
       videos: [],
     },
@@ -262,11 +262,95 @@ export const mockCars: Car[] = [
 ];
 
 export const carBrands = [
-  'Toyota', 'Honda', 'Mercedes-Benz', 'BMW', 'Lexus', 'Ford', 'Hyundai', 'Kia',
-  'Nissan', 'Mazda', 'Subaru', 'Audi', 'Volkswagen', 'Infiniti', 'Acura',
-  'Jeep', 'Chevrolet', 'Buick', 'Cadillac', 'Genesis'
+  {
+    name: 'Toyota',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_172161_1.png'
+ },
+  {
+    name: 'Tesla',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_010090_1.png'
+ },
+  {
+    name: 'Ferrari',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_335913_1.png'
+ },
+  {
+    name: 'GMC',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_952055_1.png'
+ },
+  {
+    name: 'Honda',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_203043_1.png'
+  },
+  {
+    name: 'Mercedes-Benz',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_835479_1.png'
+  },
+  {
+    name: 'BMW',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_980189_1.png'
+  },
+  {
+    name: 'Lexus',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_982523_1.png'
+  },
+  {
+    name: 'Ford',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_734802_1.png'
+  },
+  {
+    name: 'Hyundai',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_464983_1.png'
+  },
+  {
+    name: 'Kia',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_424187_1.png'
+  },
+  {
+    name: 'Nissan',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_331550_1.png'
+  },
+  {
+    name: 'Mazda',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_756270_1.png'
+  },
+  {
+    name: 'Subaru',
+    logo: 'https://example.com/path/to/subaru-logo.png'
+  },
+  {
+    name: 'Audi',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_413135_1.png'
+  },
+  {
+    name: 'Volkswagen',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_862755_1.png'
+  },
+  {
+    name: 'Infiniti',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_357986_1.png'
+  },
+  {
+    name: 'Acura',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_420973_1.png'
+  },
+  {
+    name: 'Jeep',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_428381_1.png'
+  },
+  {
+    name: 'Chevrolet',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_852978_1.png'
+  },
+  {
+    name: 'Cadillac',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_177894_1.png'
+  },
+  {
+    name: 'Genesis',
+    logo: 'https://api.sellbase.im/images/cars-ng/categorie_255041_1.png'
+  }
 ];
-
 export const carConditions = ['Brand New', 'Foreign Used', 'Nigerian Used'];
 
 export const transmissionTypes = ['Automatic', 'Manual', 'CVT'];

@@ -43,7 +43,7 @@ const Founder: React.FC = () => {
     {
       year: "2018",
       title: "Showroom Innovation",
-      description: "Opened first computerized showroom with interactive digital features, setting new industry standards."
+      description: "Opened first showroom with interactive digital features, setting new industry standards."
     },
     {
       year: "2019",
@@ -166,12 +166,12 @@ const Founder: React.FC = () => {
                   
                   <p>
                     Jeffrey began with a simple but powerful mission: to transform the car buying experience in Nigeria by making 
-                    it more transparent, accessible, and technology-driven. What started with a small inventory of personally 
+                    it more transparent and accessible. What started with a small inventory of personally 
                     acquired vehicles has grown into a nationwide enterprise.
                   </p>
                   
                   <p>
-                    His forward-thinking approach led to the development of computerized showrooms—digitally equipped spaces that 
+                    His forward-thinking approach led to the development of computerized showrooms equipped spaces that 
                     allow customers to explore car options, view specifications, and make informed decisions in a seamless, 
                     interactive environment.
                   </p>

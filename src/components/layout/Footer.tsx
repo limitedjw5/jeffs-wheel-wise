@@ -63,7 +63,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-secondary text-secondary-foreground">
+    <footer className="bg-secondary mt-5 text-secondary-foreground">
       {/* Newsletter Section */}
       <div className="border-b border-border">
         <div className="container mx-auto px-4 py-12">
@@ -98,13 +98,9 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <Car className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h2 className="text-xl font-bold text-gradient">Jeffworldwide</h2>
-                <p className="text-sm text-muted-foreground">Automotive Excellence</p>
+            <div className="flex items-center space-x-2">
+              <div className="w-60 h-40 flex items-center justify-center">
+                <img src="https://i.ibb.co/s96pZ6yj/Screenshot-2025-07-31-at-1-39-43-AM.png" alt="logo" className="w-50 h-15 text-white" />
               </div>
             </div>
             
@@ -131,7 +127,7 @@ const Footer: React.FC = () => {
             </div>
 
             {/* RC Number */}
-            <div className="mt-6 p-3 bg-muted rounded-lg">
+            <div className="mt-6 rounded-lg">
               <p className="text-sm font-medium">RC Number: 1555217</p>
               <p className="text-xs text-muted-foreground">Registered: 23 Jan 2019</p>
             </div>
@@ -193,13 +189,13 @@ const Footer: React.FC = () => {
                   href="https://instagram.com/jeffworldwide_" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="p-2 bg-muted hover:bg-accent hover:text-accent-foreground rounded-lg smooth-transition hover-lift"
+                  className="p-2  rounded-lg smooth-transition hover-lift"
                 >
                   <Instagram className="w-4 h-4" />
                 </a>
                 <a 
                   href="#" 
-                  className="p-2 bg-muted hover:bg-accent hover:text-accent-foreground rounded-lg smooth-transition hover-lift"
+                  className="p-2 rounded-lg smooth-transition hover-lift"
                 >
                   <Twitter className="w-4 h-4" />
                 </a>

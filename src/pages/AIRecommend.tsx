@@ -34,7 +34,7 @@ import { Link } from 'react-router-dom';
 const AIRecommend: React.FC = () => {
   const { toast } = useToast();
   const { cars, toggleFavorite, favorites } = useCarStore();
-  
+  console.log(cars)
   const [budget, setBudget] = useState([5000000]);
   const [carType, setCarType] = useState('');
   const [requirements, setRequirements] = useState('');

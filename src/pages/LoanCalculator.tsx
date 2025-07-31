@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Calculator, 
   DollarSign, 
   Calendar, 
-  Percent, 
-  Car, 
-  TrendingUp,
-  Info,
-  Phone,
-  FileText,
-  CheckCircle,
-  ArrowRight
+  Car,
+  Phone
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 const LoanCalculator: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -31,16 +23,14 @@ const LoanCalculator: React.FC = () => {
 
   // Form State
   const [carPrice, setCarPrice] = useState<number>(0);
-  const [downPayment, setDownPayment] = useState<number>(40); // Default 40%
-  const [loanTerm, setLoanTerm] = useState<number>(12); // Default 12 months
-  const [interestRate, setInterestRate] = useState<number>(15); // Default 15% annual
+  const [downPayment, setDownPayment] = useState<number>(40);
+  const [loanTerm, setLoanTerm] = useState<number>(12);
   const [carMake, setCarMake] = useState<string>('');
   const [carModel, setCarModel] = useState<string>('');
   const [carYear, setCarYear] = useState<string>('');
 
   // Calculated Values
   const [monthlyPayment, setMonthlyPayment] = useState<number>(0);
-  const [totalInterest, setTotalInterest] = useState<number>(0);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [paymentSchedule, setPaymentSchedule] = useState<any[]>([]);
 
@@ -59,55 +49,36 @@ const LoanCalculator: React.FC = () => {
 
   useEffect(() => {
     calculateLoan();
-  }, [carPrice, downPayment, loanTerm, interestRate]);
+  }, [carPrice, downPayment, loanTerm]);
 
   const calculateLoan = () => {
     if (carPrice <= 0) {
       setMonthlyPayment(0);
-      setTotalInterest(0);
       setTotalAmount(0);
       setPaymentSchedule([]);
       return;
     }
 
     const principal = carPrice * (1 - downPayment / 100);
-    const monthlyRate = interestRate / 100 / 12;
+    const payment = principal / loanTerm;
     
-    if (monthlyRate === 0) {
-      // No interest case
-      const payment = principal / loanTerm;
-      setMonthlyPayment(payment);
-      setTotalInterest(0);
-      setTotalAmount(principal);
-    } else {
-      // Calculate monthly payment using loan formula
-      const payment = principal * (monthlyRate * Math.pow(1 + monthlyRate, loanTerm)) / 
-                     (Math.pow(1 + monthlyRate, loanTerm) - 1);
-      
-      const totalPaid = payment * loanTerm;
-      const interest = totalPaid - principal;
-      
-      setMonthlyPayment(payment);
-      setTotalInterest(interest);
-      setTotalAmount(totalPaid);
-    }
+    setMonthlyPayment(payment);
+    setTotalAmount(principal);
 
     // Generate payment schedule
     const schedule = [];
-    let remainingBalance = carPrice * (1 - downPayment / 100);
+    let remainingBalance = principal;
     
     for (let i = 1; i <= loanTerm; i++) {
-      const interestPayment = remainingBalance * (interestRate / 100 / 12);
-      const principalPayment = monthlyPayment - interestPayment;
-      remainingBalance -= principalPayment;
+      remainingBalance -= payment;
       
       schedule.push({
         month: i,
-        payment: monthlyPayment,
-        principal: principalPayment,
-        interest: interestPayment,
+        payment: payment,
+        principal: payment,
+        interest: 0,
         balance: Math.max(0, remainingBalance),
-        cumulative: monthlyPayment * i
+        cumulative: payment * i
       });
     }
     
@@ -138,19 +109,7 @@ Please process my application. Thank you!`;
     });
   };
 
-  const loanTermOptions = [
-    { value: 6, label: '6 months' },
-    { value: 12, label: '12 months' },
-    { value: 18, label: '18 months' },
-    { value: 24, label: '24 months' }
-  ];
-
-  const interestRateOptions = [
-    { value: 10, label: '10% (Excellent Credit)' },
-    { value: 12, label: '12% (Good Credit)' },
-    { value: 15, label: '15% (Fair Credit)' },
-    { value: 18, label: '18% (Poor Credit)' }
-  ];
+  const loanTermOptions = [6, 12, 18, 24];
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-background via-background to-muted/20">
@@ -160,23 +119,244 @@ Please process my application. Thank you!`;
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
             <Calculator className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
-            Car Loan Calculator
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
+            Interest-Free Car Loan
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Calculate your monthly car payments and explore flexible financing options with as little as 40% down.
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Calculate your monthly payments with our Sharia-compliant financing
           </p>
         </motion.div>
 
-        {/* ... keep existing code (calculator form and results) */}
-        <div className="text-center">
-          <p className="text-muted-foreground">Full loan calculator functionality implemented!</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
+          {/* Calculator Form */}
+          <Card className="hover-lift">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calculator className="w-5 h-5" />
+                Loan Details
+              </CardTitle>
+              <CardDescription>
+                Enter your car and financing information
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 md:space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="carPrice">Car Price (₦)</Label>
+                  <Input
+                    id="carPrice"
+                    value={carPrice.toLocaleString('en-US')}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const unformattedValue = value.replace(/,/g, '');
+                      if (!isNaN(Number(unformattedValue))) {
+                        setCarPrice(Number(unformattedValue));
+                      }
+                    }}
+                    placeholder="Enter car price"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="downPayment">Down Payment ({downPayment}%)</Label>
+                  <Slider
+                    id="downPayment"
+                    defaultValue={[downPayment]}
+                    min={20}
+                    max={80}
+                    step={5}
+                    onValueChange={(value) => setDownPayment(value[0])}
+                  />
+                  <div className="flex justify-between text-sm text-muted-foreground">
+                    <span>20%</span>
+                    <span>80%</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Loan Term (months)</Label>
+                  <div className="grid grid-cols-4 gap-2">
+                    {loanTermOptions.map((term) => (
+                      <Button
+                        key={term}
+                        variant={loanTerm === term ? 'default' : 'outline'}
+                        onClick={() => setLoanTerm(term)}
+                        className="py-1 h-auto"
+                      >
+                        {term}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="carMake">Make</Label>
+                    <Input
+                      id="carMake"
+                      value={carMake}
+                      onChange={(e) => setCarMake(e.target.value)}
+                      placeholder="e.g. Toyota"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="carModel">Model</Label>
+                    <Input
+                      id="carModel"
+                      value={carModel}
+                      onChange={(e) => setCarModel(e.target.value)}
+                      placeholder="e.g. Camry"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="carYear">Year</Label>
+                  <Input
+                    id="carYear"
+                    value={carYear}
+                    onChange={(e) => setCarYear(e.target.value)}
+                    placeholder="e.g. 2023"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Results */}
+          <Card className="hover-lift">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <DollarSign className="w-5 h-5" />
+                Payment Summary
+              </CardTitle>
+              <CardDescription>
+                Your estimated monthly payment details
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4 md:space-y-6">
+                <div className="bg-primary/10 p-4 rounded-lg">
+                  <p className="text-sm text-muted-foreground">Monthly Payment</p>
+                  <p className="text-3xl font-bold text-primary">
+                    ₦{monthlyPayment.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </p>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <p className="text-muted-foreground">Car Price</p>
+                    <p>₦{carPrice.toLocaleString()}</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-muted-foreground">Down Payment ({downPayment}%)</p>
+                    <p>₦{(carPrice * (downPayment / 100)).toLocaleString()}</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-muted-foreground">Loan Amount</p>
+                    <p>₦{(carPrice * (1 - downPayment / 100)).toLocaleString()}</p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-muted-foreground">Loan Term</p>
+                    <p>{loanTerm} months</p>
+                  </div>
+                  <div className="flex justify-between font-medium">
+                    <p>Total Amount</p>
+                    <p>₦{totalAmount.toLocaleString()}</p>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-3">
+                  <div className="h-48 md:h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={paymentSchedule}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip 
+                          formatter={(value) => [`₦${value.toLocaleString()}`, 'Balance']}
+                          labelFormatter={(month) => `Month ${month}`}
+                        />
+                        <Line
+                          type="monotone"
+                          dataKey="balance"
+                          stroke="#8884d8"
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                          activeDot={{ r: 5 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="text-sm text-muted-foreground text-center">
+                    Remaining balance over time
+                  </p>
+                </div>
+
+                <Button
+                  className="w-full mt-2"
+                  size="lg"
+                  onClick={handleWhatsAppApplication}
+                  disabled={!carPrice || !carMake || !carModel || !carYear}
+                >
+                  Apply Now <Phone className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
+
+        {/* Payment Schedule */}
+        <Card className="hover-lift">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Calendar className="w-5 h-5" />
+              Payment Schedule
+            </CardTitle>
+            <CardDescription>
+              Detailed breakdown of your monthly payments
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-3 px-4 text-sm font-medium">Month</th>
+                    <th className="text-right py-3 px-4 text-sm font-medium">Payment</th>
+                    <th className="text-right py-3 px-4 text-sm font-medium">Principal</th>
+                    <th className="text-right py-3 px-4 text-sm font-medium">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paymentSchedule.map((payment) => (
+                    <tr key={payment.month} className="border-b hover:bg-muted/50">
+                      <td className="py-3 px-4">{payment.month}</td>
+                      <td className="text-right py-3 px-4">
+                        ₦{payment.payment.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      </td>
+                      <td className="text-right py-3 px-4">
+                        ₦{payment.principal.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      </td>
+                      <td className="text-right py-3 px-4">
+                        ₦{payment.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -24,9 +24,9 @@ const Header: React.FC = () => {
   const navigation = [
     { name: 'Home', href: '/' },
     { name: 'Inventory', href: '/inventory' },
-    { name: 'AI Recommend', href: '/ai-recommend' },
-    { name: 'Loan Calculator', href: '/loan-calculator' },
-    { name: 'About Founder', href: '/founder' },
+    { name: 'AI Recommender', href: '/ai-recommend' },
+    // { name: 'Loan Calculator', href: '/loan-calculator' },
+    { name: 'Our Founder', href: '/founder' },
   ];
 
   const isActive = (path: string) => {
@@ -49,13 +49,9 @@ const Header: React.FC = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover-lift">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-              <Car className="w-6 h-6 text-white" />
-            </div>
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-gradient">Jeffworldwide</h1>
-              <p className="text-xs text-muted-foreground">Automotive Excellence</p>
-            </div>
+              <div className="w-60 h-40 flex items-center justify-center">
+                <img src="https://i.ibb.co/s96pZ6yj/Screenshot-2025-07-31-at-1-39-43-AM.png" alt="logo" className="w-50 h-15 text-white" />
+              </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -66,8 +62,8 @@ const Header: React.FC = () => {
                 to={item.href}
                 className={`px-3 py-2 rounded-md text-sm font-medium smooth-transition ${
                   isActive(item.href)
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-muted hover:text-accent-foreground'
+                    ? 'text-blue-400'
+                    : 'text-foreground'
                 }`}
               >
                 {item.name}

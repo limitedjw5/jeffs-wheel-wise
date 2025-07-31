@@ -39,12 +39,12 @@ import { db } from '@/lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
 
 const CarDetails: React.FC = () => {
-  const { id } = useParams();
+   const { carId } = useParams<{ carId: string }>();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { cars, favorites, toggleFavorite, filteredCars } = useCarStore();
-  
+  const { cars, favorites, toggleFavorite } = useCarStore();
   const [car, setCar] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [aiChatMessages, setAiChatMessages] = useState<Array<{role: 'user' | 'ai', content: string}>>([]);
@@ -52,33 +52,62 @@ const CarDetails: React.FC = () => {
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiChatOpen, setAiChatOpen] = useState(false);
   const [similarCars, setSimilarCars] = useState<any[]>([]);
-
+  console.log(cars)
   useEffect(() => {
-    if (!id) return;
-
-    // Try to find car in store first
-    const foundCar = cars.find(c => c.id === id);
-    if (foundCar) {
-      setCar(foundCar);
-      findSimilarCars(foundCar);
+    let timeoutId: NodeJS.Timeout;
+    if (!carId) {
+      setLoading(false);
       return;
     }
 
-    // If not in store, fetch from Firestore
-    const unsubscribe = onSnapshot(doc(db, 'cars', id), (doc) => {
-      if (doc.exists()) {
-        const carData = { id: doc.id, ...doc.data() };
-        setCar(carData);
-        findSimilarCars(carData);
-      } else {
-        setCar(null);
-      }
-    });
+    setLoading(true);
 
-    return () => unsubscribe();
-  }, [id, cars]);
+    const foundCar = cars.find(c => c.id === carId);
+    if (foundCar) {
+      setCar(foundCar);
+      findSimilarCars(foundCar);
+      setLoading(false);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      doc(db, 'cars', carId),
+      (doc) => {
+        clearTimeout(timeoutId);
+        if (doc.exists()) {
+          const carData = { id: doc.id, ...doc.data() };
+          setCar(carData);
+          findSimilarCars(carData);
+        } else {
+          setCar(null);
+        }
+        setLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching car:", error);
+        clearTimeout(timeoutId);
+        setCar(null);
+        setLoading(false);
+      }
+    );
+
+    // Safety timeout: cancel loading after 10 seconds
+    timeoutId = setTimeout(() => {
+      console.warn("Firestore request timed out.");
+      setCar(null);
+      setLoading(false);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      unsubscribe();
+    };
+  }, [carId, cars]);
+
 
   const findSimilarCars = (currentCar: any) => {
+    if (!currentCar || !cars.length) return;
+    
     const similar = cars
       .filter(c => 
         c.id !== currentCar.id && 
@@ -168,51 +197,57 @@ const CarDetails: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-20 bg-background">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!car) {
     return (
       <div className="min-h-screen pt-20 bg-background">
         <div className="container mx-auto px-4 py-8">
-          {car === null ? (
-            <div className="text-center py-12">
-              <AlertTriangle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
-              <h2 className="text-2xl font-bold mb-2">Car Not Available</h2>
-              <p className="text-muted-foreground mb-6">
-                This car is no longer available, but we have great alternatives for you!
-              </p>
-              
-              {similarCars.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="text-xl font-semibold mb-4">Similar Cars You Might Like</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {similarCars.map((similarCar) => (
-                      <Card key={similarCar.id} className="hover-lift">
-                        <CardContent className="p-4">
-                          <img
-                            src={similarCar.media?.photos?.[0] || '/placeholder.svg'}
-                            alt={`${similarCar.make} ${similarCar.model}`}
-                            className="w-full h-48 object-cover rounded-lg mb-4"
-                          />
-                          <h4 className="font-semibold">{similarCar.year} {similarCar.make} {similarCar.model}</h4>
-                          <p className="text-xl font-bold text-primary">₦{similarCar.price?.toLocaleString()}</p>
-                          <Link to={`/inventory/${similarCar.id}`}>
-                            <Button className="w-full mt-3">View Details</Button>
-                          </Link>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
+          <div className="text-center py-12">
+            <AlertTriangle className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
+            <h2 className="text-2xl font-bold mb-2">Car Not Found</h2>
+            <p className="text-muted-foreground mb-6">
+              The car you're looking for doesn't exist or is no longer available.
+            </p>
+            
+            {similarCars.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-xl font-semibold mb-4">Similar Cars You Might Like</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {similarCars.map((similarCar) => (
+                    <Card key={similarCar.id} className="hover-lift">
+                      <CardContent className="p-4">
+                        <img
+                          src={similarCar.media?.photos?.[0] || '/placeholder.svg'}
+                          alt={`${similarCar.make} ${similarCar.model}`}
+                          className="w-full h-48 object-cover rounded-lg mb-4"
+                        />
+                        <h4 className="font-semibold">{similarCar.year} {similarCar.make} {similarCar.model}</h4>
+                        <p className="text-xl font-bold text-primary">₦{similarCar.price?.toLocaleString()}</p>
+                        <Link to={`/inventory/${similarCar.id}`}>
+                          <Button className="w-full mt-3">View Details</Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
-              )}
-              
-              <Link to="/inventory">
-                <Button className="mt-6">Browse All Cars</Button>
-              </Link>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-          )}
+              </div>
+            )}
+            
+            <Link to="/inventory">
+              <Button className="mt-6">Browse All Cars</Button>
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -258,10 +293,11 @@ const CarDetails: React.FC = () => {
     );
   }
 
+
+
   return (
-    <div className="min-h-screen pt-20 bg-background">
-      <div className="container mx-auto px-4 py-8">
-        {/* Back Button */}
+    <div className="min-h-screen pt-5 bg-background">
+      <div className="container mx-auto px-4">
         <Button
           variant="outline"
           onClick={() => navigate(-1)}
@@ -272,7 +308,6 @@ const CarDetails: React.FC = () => {
         </Button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Image Gallery */}
           <div className="space-y-4">
             <div className="relative">
               <img
@@ -313,7 +348,6 @@ const CarDetails: React.FC = () => {
               </Button>
             </div>
 
-            {/* Thumbnail Gallery */}
             {car.media?.photos?.length > 1 && (
               <div className="flex space-x-2 overflow-x-auto">
                 {car.media.photos.map((photo: string, index: number) => (
@@ -331,7 +365,6 @@ const CarDetails: React.FC = () => {
             )}
           </div>
 
-          {/* Car Information */}
           <div className="space-y-6">
             <div>
               <div className="flex items-center justify-between mb-2">
@@ -383,7 +416,6 @@ const CarDetails: React.FC = () => {
               </div>
             </div>
 
-            {/* Key Specs */}
             <Card>
               <CardHeader>
                 <CardTitle>Key Specifications</CardTitle>
@@ -414,7 +446,6 @@ const CarDetails: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4">
               <Button onClick={handleWhatsApp} className="hover-lift">
                 <Phone className="w-4 h-4 mr-2" />
@@ -430,7 +461,6 @@ const CarDetails: React.FC = () => {
               </Link>
             </div>
 
-            {/* AI Chat Button */}
             <Dialog open={aiChatOpen} onOpenChange={setAiChatOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-full hover-lift">
@@ -505,7 +535,6 @@ const CarDetails: React.FC = () => {
           </div>
         </div>
 
-        {/* Detailed Information */}
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <Accordion type="single" collapsible className="space-y-4">
@@ -637,9 +666,7 @@ const CarDetails: React.FC = () => {
             </Accordion>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Financing Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -682,14 +709,12 @@ const CarDetails: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Contact Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Contact Dealer</CardTitle>
+                <CardTitle>Contact Us</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <p className="font-medium">Jeffworldwide Automotive</p>
                   <p className="text-sm text-muted-foreground">
                     Plot 5, Lateef Jakande Road, Ikeja, Lagos
                   </p>
@@ -716,7 +741,6 @@ const CarDetails: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Warranty Information */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -733,7 +757,6 @@ const CarDetails: React.FC = () => {
           </div>
         </div>
 
-        {/* Similar Cars */}
         {similarCars.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold mb-6">Similar Cars You Might Like</h2>
@@ -774,7 +797,6 @@ const CarDetails: React.FC = () => {
         )}
       </div>
 
-      {/* Image Modal */}
       <Dialog open={isImageModalOpen} onOpenChange={setIsImageModalOpen}>
         <DialogContent className="max-w-4xl h-[80vh] p-0">
           <div className="relative w-full h-full">

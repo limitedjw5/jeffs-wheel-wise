@@ -66,7 +66,7 @@ interface CarStore {
   comparison: CarComparison;
   searchQuery: string;
   favorites: string[];
-  
+
   // Actions
   setCars: (cars: Car[]) => void;
   addCar: (car: Car) => void;
@@ -100,28 +100,28 @@ export const useCarStore = create<CarStore>()(
       },
 
       addCar: (car) => {
-        const cars = [...get().cars, car];
-        set({ cars });
+        const updated = [...get().cars, car];
+        set({ cars: updated });
         get().applyFiltersAndSort();
       },
 
       updateCar: (id, updates) => {
-        const cars = get().cars.map(car => 
+        const updated = get().cars.map(car =>
           car.id === id ? { ...car, ...updates, updatedAt: new Date().toISOString() } : car
         );
-        set({ cars });
+        set({ cars: updated });
         get().applyFiltersAndSort();
       },
 
       deleteCar: (id) => {
-        const cars = get().cars.filter(car => car.id !== id);
-        set({ cars });
+        const updated = get().cars.filter(car => car.id !== id);
+        set({ cars: updated });
         get().applyFiltersAndSort();
       },
 
       setFilters: (newFilters) => {
-        const filters = { ...get().filters, ...newFilters };
-        set({ filters });
+        const merged = { ...get().filters, ...newFilters };
+        set({ filters: merged });
         get().applyFiltersAndSort();
       },
 
@@ -130,29 +130,21 @@ export const useCarStore = create<CarStore>()(
         get().applyFiltersAndSort();
       },
 
-      setSearchQuery: (searchQuery) => {
-        set({ searchQuery });
+      setSearchQuery: (query) => {
+        set({ searchQuery: query });
         get().applyFiltersAndSort();
       },
 
       addToComparison: (car) => {
-        const { comparison } = get();
-        if (comparison.cars.length < 3 && !comparison.cars.find(c => c.id === car.id)) {
-          set({
-            comparison: {
-              cars: [...comparison.cars, car]
-            }
-          });
+        const current = get().comparison.cars;
+        if (current.length < 3 && !current.some(c => c.id === car.id)) {
+          set({ comparison: { cars: [...current, car] } });
         }
       },
 
       removeFromComparison: (carId) => {
-        const { comparison } = get();
-        set({
-          comparison: {
-            cars: comparison.cars.filter(car => car.id !== carId)
-          }
-        });
+        const current = get().comparison.cars.filter(c => c.id !== carId);
+        set({ comparison: { cars: current } });
       },
 
       clearComparison: () => {
@@ -160,29 +152,27 @@ export const useCarStore = create<CarStore>()(
       },
 
       toggleFavorite: (carId) => {
-        const { favorites } = get();
-        const newFavorites = favorites.includes(carId)
-          ? favorites.filter(id => id !== carId)
-          : [...favorites, carId];
-        set({ favorites: newFavorites });
+        const current = get().favorites;
+        const updated = current.includes(carId)
+          ? current.filter(id => id !== carId)
+          : [...current, carId];
+        set({ favorites: updated });
       },
 
       applyFiltersAndSort: () => {
         const { cars, filters, sortBy, sortOrder, searchQuery } = get();
         let filtered = [...cars];
 
-        // Apply search query
         if (searchQuery) {
-          const query = searchQuery.toLowerCase();
+          const q = searchQuery.toLowerCase();
           filtered = filtered.filter(car =>
-            car.make.toLowerCase().includes(query) ||
-            car.model.toLowerCase().includes(query) ||
-            car.year.toString().includes(query) ||
-            car.condition.toLowerCase().includes(query)
+            car.make.toLowerCase().includes(q) ||
+            car.model.toLowerCase().includes(q) ||
+            car.year.toString().includes(q) ||
+            car.condition.toLowerCase().includes(q)
           );
         }
 
-        // Apply filters
         if (filters.make) {
           filtered = filtered.filter(car => car.make === filters.make);
         }
@@ -196,13 +186,13 @@ export const useCarStore = create<CarStore>()(
         }
 
         if (filters.year) {
-          filtered = filtered.filter(car => 
+          filtered = filtered.filter(car =>
             car.year >= filters.year!.min && car.year <= filters.year!.max
           );
         }
 
         if (filters.priceRange) {
-          filtered = filtered.filter(car => 
+          filtered = filtered.filter(car =>
             car.price >= filters.priceRange!.min && car.price <= filters.priceRange!.max
           );
         }
@@ -213,36 +203,34 @@ export const useCarStore = create<CarStore>()(
           );
         }
 
-        // Apply sorting
         filtered.sort((a, b) => {
-          let comparison = 0;
-          
+          let result = 0;
           switch (sortBy) {
             case 'price':
-              comparison = a.price - b.price;
+              result = a.price - b.price;
               break;
             case 'year':
-              comparison = a.year - b.year;
+              result = a.year - b.year;
               break;
             case 'mileage':
-              comparison = a.mileage - b.mileage;
+              result = a.mileage - b.mileage;
               break;
             case 'newest':
-              comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+              result = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
               break;
             default:
-              comparison = 0;
+              result = 0;
           }
-
-          return sortOrder === 'desc' ? -comparison : comparison;
+          return sortOrder === 'desc' ? -result : result;
         });
 
         set({ filteredCars: filtered });
       },
     }),
     {
-      name: 'jeffworldwide-cars',
+      name: 'jeffworldwide-car-store',
       partialize: (state) => ({
+        cars: state.cars,
         favorites: state.favorites,
         comparison: state.comparison,
       }),

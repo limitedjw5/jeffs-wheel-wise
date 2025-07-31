@@ -1,12 +1,12 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = process.env.VITE_GEMINI_API_KEY || 'demo-key';
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyCTRaqxdbYwXSijSfL7jI5EOOYWLMkqYSM';
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // Get the model
-export const geminiModel = genAI.getGenerativeModel({ model: 'gemini-pro' });
+export const geminiModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
 export interface CarRecommendation {
   id: string;
@@ -25,19 +25,20 @@ export const getCarRecommendations = async (
   availableCars: any[]
 ): Promise<CarRecommendation[]> => {
   try {
-    const prompt = `
-      As an AI car expert for Jeffworldwide Automotive, recommend cars based on these criteria:
+const prompt = `
+      You are an AI car expert for Jeffworldwide Automotive, recommend cars based on these criteria. If the criterias dont match exactly then you recommend the closest to the criteria. You cannot return no recommendation:
       
       Budget: ₦${budget.toLocaleString()}
       Car Type: ${carType}
       Requirements: ${requirements}
       
-      Available Cars:
+      Available Cars to make the recommendation from:
       ${availableCars.map(car => `
         ID: ${car.id}
         Make: ${car.make}
         Model: ${car.model}
         Year: ${car.year}
+        Type: ${car.type}
         Price: ₦${car.price?.toLocaleString()}
         Condition: ${car.condition}
         Features: ${car.features?.standard?.join(', ') || 'N/A'}
@@ -59,27 +60,36 @@ export const getCarRecommendations = async (
         ]
       }
     `;
-
     const result = await geminiModel.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
     
+    // Clean the response text
+    const cleanedText = text.replace(/```json|```/g, '').trim();
+    
     try {
-      const parsed = JSON.parse(text);
+      const parsed = JSON.parse(cleanedText);
+      if (!parsed.recommendations || !Array.isArray(parsed.recommendations)) {
+        throw new Error('Invalid recommendations format');
+      }
+      
       return parsed.recommendations.map((rec: any) => {
         const car = availableCars.find(c => c.id === rec.id);
+        if (!car) {
+          throw new Error('Car not found in available cars');
+        }
         return {
           id: rec.id,
-          make: car?.make || 'Unknown',
-          model: car?.model || 'Unknown',
-          year: car?.year || 2020,
-          price: car?.price || 0,
-          reasoning: rec.reasoning,
-          confidenceScore: rec.confidenceScore
+          make: car.make,
+          model: car.model,
+          year: car.year,
+          price: car.price,
+          reasoning: rec.reasoning || 'Well-matched to your requirements',
+          confidenceScore: rec.confidenceScore || 75
         };
-      }).filter((rec: CarRecommendation) => rec.make !== 'Unknown');
+      });
     } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
+      console.error('Failed to parse AI response:', parseError, 'Response:', text);
       return [];
     }
   } catch (error) {
