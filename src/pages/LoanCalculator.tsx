@@ -134,7 +134,7 @@ Please process my application. Thank you!`;
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
           {/* Calculator Form */}
-          <Card className="hover-lift">
+          <Card className="hover-lift h-fit">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Calculator className="w-5 h-5" />
@@ -167,13 +167,13 @@ Please process my application. Thank you!`;
                   <Slider
                     id="downPayment"
                     defaultValue={[downPayment]}
-                    min={20}
+                    min={40}
                     max={80}
                     step={5}
                     onValueChange={(value) => setDownPayment(value[0])}
                   />
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>20%</span>
+                    <span>40%</span>
                     <span>80%</span>
                   </div>
                 </div>
@@ -195,16 +195,16 @@ Please process my application. Thank you!`;
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="carMake">Make</Label>
-                    <Input
-                      id="carMake"
-                      value={carMake}
-                      onChange={(e) => setCarMake(e.target.value)}
-                      placeholder="e.g. Toyota"
-                    />
-                  </div>
-                  <div className="space-y-2">
+                {carMake && <div className="space-y-2">
+                  <Label htmlFor="carMake">Make</Label>
+                  <Input
+                    id="carMake"
+                    value={carMake}
+                    onChange={(e) => setCarMake(e.target.value)}
+                    placeholder="e.g. Toyota"
+                  />
+                </div>}
+                 {carModel && <div className="space-y-2">
                     <Label htmlFor="carModel">Model</Label>
                     <Input
                       id="carModel"
@@ -212,10 +212,10 @@ Please process my application. Thank you!`;
                       onChange={(e) => setCarModel(e.target.value)}
                       placeholder="e.g. Camry"
                     />
-                  </div>
+                  </div>}
                 </div>
 
-                <div className="space-y-2">
+               {carYear && <div className="space-y-2">
                   <Label htmlFor="carYear">Year</Label>
                   <Input
                     id="carYear"
@@ -223,13 +223,13 @@ Please process my application. Thank you!`;
                     onChange={(e) => setCarYear(e.target.value)}
                     placeholder="e.g. 2023"
                   />
-                </div>
+                </div>}
               </div>
             </CardContent>
           </Card>
 
           {/* Results */}
-          <Card className="hover-lift">
+          <Card className="hover-lift h-fit">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <DollarSign className="w-5 h-5" />
@@ -316,7 +316,7 @@ Please process my application. Thank you!`;
         </div>
 
         {/* Payment Schedule */}
-        <Card className="hover-lift">
+        <Card className="hover-lift h-fit">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calendar className="w-5 h-5" />

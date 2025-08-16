@@ -15,18 +15,22 @@ export const useThemeStore = create<ThemeStore>()(
         const newIsDark = !state.isDark;
         // Apply theme to document
         if (newIsDark) {
-          document.documentElement.classList.add('dark');
+          document.documentElement.classList.add('light');
+          // document.documentElement.classList.add('dark');
         } else {
-          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.remove('light');
+          // document.documentElement.classList.remove('dark');
         }
         return { isDark: newIsDark };
       }),
       setTheme: (isDark: boolean) => set(() => {
         // Apply theme to document
         if (isDark) {
-          document.documentElement.classList.add('dark');
+          document.documentElement.classList.add('light');
+          // document.documentElement.classList.add('dark');
         } else {
-          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.remove('light');
+          // document.documentElement.classList.remove('dark')
         }
         return { isDark };
       }),
@@ -36,9 +40,11 @@ export const useThemeStore = create<ThemeStore>()(
       onRehydrateStorage: () => (state) => {
         // Apply saved theme on load
         if (state?.isDark) {
-          document.documentElement.classList.add('dark');
+          document.documentElement.classList.add('light');
+          // document.documentElement.classList.add('dark');
         } else {
-          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.remove('light');
+          // document.documentElement.classList.remove('dark');
         }
       },
     }

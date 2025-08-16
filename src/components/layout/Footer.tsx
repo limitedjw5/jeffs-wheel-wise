@@ -6,11 +6,14 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
+import { useThemeStore } from '@/stores/useThemeStore';
 
 const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [isSubscribing, setIsSubscribing] = useState(false);
   const { toast } = useToast();
+    const { isDark } = useThemeStore();
+  
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,8 +102,9 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-2">
-              <div className="w-60 h-40 flex items-center justify-center">
-                <img src="https://i.ibb.co/s96pZ6yj/Screenshot-2025-07-31-at-1-39-43-AM.png" alt="logo" className="w-50 h-15 text-white" />
+               <div className="w-80 mb-3 flex items-center justify-center">
+                {isDark ? <img src="/dark.png" alt="logo" className="w-50 h-15 text-white" /> :
+                <img src="/light.png" alt="logo" className="w-50 h-15 text-white" /> }
               </div>
             </div>
             
@@ -135,7 +139,7 @@ const Footer: React.FC = () => {
 
           {/* Links Sections */}
           <div>
-            <h3 className="font-semibold mb-4">Company</h3>
+            <h3 className="font-semibold mb-4">Our Company</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>

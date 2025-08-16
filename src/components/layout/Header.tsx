@@ -25,7 +25,7 @@ const Header: React.FC = () => {
     { name: 'Home', href: '/' },
     { name: 'Inventory', href: '/inventory' },
     { name: 'AI Recommender', href: '/ai-recommend' },
-    // { name: 'Loan Calculator', href: '/loan-calculator' },
+    { name: 'Loan Calculator', href: '/loan-calculator' },
     { name: 'Our Founder', href: '/founder' },
   ];
 
@@ -50,7 +50,8 @@ const Header: React.FC = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 hover-lift">
               <div className="w-60 h-40 flex items-center justify-center">
-                <img src="https://i.ibb.co/s96pZ6yj/Screenshot-2025-07-31-at-1-39-43-AM.png" alt="logo" className="w-50 h-15 text-white" />
+                {isDark ? <img src="/dark.png" alt="logo" className="w-50 h-15 text-white" /> :
+                <img src="/light.png" alt="logo" className="w-50 h-15 text-white" /> }
               </div>
           </Link>
 
@@ -114,7 +115,7 @@ const Header: React.FC = () => {
               variant="outline"
               size="sm"
               onClick={toggleTheme}
-              className="hover-lift"
+              className="hover-lift hidden"
             >
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>

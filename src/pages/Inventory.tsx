@@ -180,9 +180,9 @@ const Inventory: React.FC = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="any">Any Make</SelectItem>
-          {carBrands.map((brand) => (
-            <SelectItem key={brand} value={brand}>
-              {brand}
+          {carBrands.map((brand, index) => (
+            <SelectItem key={brand.name + index} value={brand.name}>
+              {brand.name}
             </SelectItem>
           ))}
         </SelectContent>
