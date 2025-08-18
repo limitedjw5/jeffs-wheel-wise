@@ -117,7 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         uid: user.uid,
         email: user.email || '',
         role: 'user',
-        theme: 'dark',
+        theme: 'light',
         favorites: [],
         createdAt: new Date().toISOString(),
       };

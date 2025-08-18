@@ -70,9 +70,6 @@ const Auth: React.FC = () => {
       >
         <Card className="card-shadow">
           <CardHeader className="text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-              <Car className="w-8 h-8 text-white" />
-            </div>
             <CardTitle className="text-2xl font-bold">
               {isSignIn ? 'Welcome Back' : 'Create Account'}
             </CardTitle>
@@ -157,7 +154,7 @@ const Auth: React.FC = () => {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center border-t-2">
               <p className="text-sm text-muted-foreground">
                 {isSignIn ? "Don't have an account?" : "Already have an account?"}
                 <Button
@@ -171,7 +168,7 @@ const Auth: React.FC = () => {
             </div>
 
             {isSignIn && (
-              <div className="mt-4 text-center">
+              <div className="mt-4 hidden text-center">
                 <p className="text-xs text-muted-foreground">
                   For admin access, contact support
                 </p>

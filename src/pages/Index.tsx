@@ -97,7 +97,7 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[50vh] overflow-hidden">
+      <section className="relative h-[60vh] lg:h-[45vh]">
         <Swiper
           modules={[Autoplay, Pagination, EffectFade]}
           effect="fade"
@@ -113,14 +113,14 @@ const Index: React.FC = () => {
                   className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${slide.image})` }}
                 />
-                <div className="absolute inset-0 bg-black/90 opacity-95" />
+                <div className="absolute inset-0 bg-black/70 opacity-90" />
                 
                 <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
                   <motion.h1 
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
-                    className="text-5xl md:text-7xl font-bold mb-6"
+                    className="lg:text-7xl text-5xl font-bold mb-6"
                   >
                     {slide.title}
                   </motion.h1>
@@ -128,7 +128,7 @@ const Index: React.FC = () => {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-xl md:text-2xl mb-8 opacity-90"
+                    className="text-xl md:text-2xl mb-20 opacity-90"
                   >
                     {slide.subtitle}
                   </motion.p>
@@ -152,9 +152,9 @@ const Index: React.FC = () => {
         </Swiper>
 
         {/* Search Bar Overlay */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-5 z-20">
-          <Card className="card-shadow bg-white/95 backdrop-blur-md">
-            <CardContent className="p-6">
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 w-full max-w-4xl px-5 z-30">
+          <Card className="card-shadow bg-white/95 backdrop-blur-md mb-[-100px]">
+            <CardContent className="p-4">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
@@ -198,49 +198,49 @@ const Index: React.FC = () => {
 
 
      {/* Brand Section */}
-<section className="py-16">
-  <div className="container mx-auto px-4">
-    <div className="text-center mb-12">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4">Browse by Brand</h2>
-      <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-        Choose from premium brands we trust and our customers love
-      </p>
-    </div>
-    
-    <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-4">
-      {carBrands.slice(0, 20).map((brand) => (
-        <motion.button
-          key={brand.name}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setSelectedBrand(brand.name)}
-          className={`p-2 rounded-lg border-2 smooth-transition hover-lift flex flex-col items-center justify-center aspect-square ${
-            selectedBrand === brand.name 
-              ? 'border-primary bg-primary/10' 
-              : 'border-border hover:border-primary'
-          }`}
-        >
-          <img 
-            src={brand.logo} 
-            alt={brand.name}
-            className="w-28 h-28 object-contain mb-2"
-            onError={(e) => {
-              // Fallback if logo fails to load
-              (e.target as HTMLImageElement).src = '/path-to-fallback-image.png';
-            }}
-          />
-          <span className="font-medium text-xs text-center">{brand.name}</span>
-        </motion.button>
-      ))}
-    </div>
-  </div>
-</section>
+    <section className="py-16 mt-8">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Browse by Brand</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto hidden">
+            Choose from premium brands we trust and our customers love
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-10 gap-4">
+          {carBrands.slice(0, 20).map((brand) => (
+            <motion.button
+              key={brand.name}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedBrand(brand.name)}
+              className={`p-2 rounded-lg border-2 smooth-transition hover-lift flex flex-col items-center justify-center aspect-square ${
+                selectedBrand === brand.name 
+                  ? 'border-primary bg-primary/10' 
+                  : 'border-border hover:border-primary'
+              }`}
+            >
+              <img 
+                src={brand.logo} 
+                alt={brand.name}
+                className="w-28 h-28 object-contain mb-2"
+                onError={(e) => {
+                  // Fallback if logo fails to load
+                  (e.target as HTMLImageElement).src = '/path-to-fallback-image.png';
+                }}
+              />
+              <span className="font-medium text-xs text-center">{brand.name}</span>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </section>
 
       {/* Featured Cars */}
       <section className="py-16 bg-muted/50">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-12">
-            <div>
+          <div className="flex flex-col p-3 gap-3 justify-between text-center items-center mb-12">
+            <div className='text-center w-full'>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Vehicles</h2>
               <p className="text-muted-foreground text-lg">
                 Hand-picked premium cars with the best value
@@ -322,11 +322,11 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Deal of the Day */}
+      {/* Deal of the Week */}
       <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Deal of the Day</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Deal of the Week</h2>
             <p className="text-muted-foreground text-lg">
               Limited time offer - don't miss out!
             </p>
@@ -342,7 +342,7 @@ const Index: React.FC = () => {
                     className="w-full h-full object-cover"
                   />
                   <Badge className="absolute top-4 left-4 bg-destructive text-destructive-foreground animate-pulse">
-                    Deal of the Day
+                    Deal of the Week
                   </Badge>
                 </div>
                 <CardContent className="p-8 flex flex-col justify-center">
@@ -428,6 +428,40 @@ const Index: React.FC = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+      
+      {/* Founder Preview */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <Card className="max-w-4xl mx-auto overflow-hidden card-shadow">
+            <div className="grid md:grid-cols-2">
+              <div className="relative h-64 md:h-auto">
+                <img 
+                  src="https://cdn.pmnewsnigeria.com/wp-content/uploads/2024/10/4afa0da8-b1ad-4ab2-bcf0-6b5386b52b31.jpeg" 
+                  alt="Jeffrey Okereafor Chinedu"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardContent className="p-8 flex flex-col justify-center">
+                <h3 className="text-2xl font-bold mb-4">Meet Our Founder</h3>
+                <blockquote className="text-lg text-muted-foreground mb-6 italic">
+                  "Our aim is to revolutionize car ownership in Nigeria, and eventually across Africa. 
+                  We want to create a network of computerized showrooms that bring car buying into the 
+                  digital age while keeping customer service at the heart of it all."
+                </blockquote>
+                <div className="mb-6">
+                  <h4 className="font-bold">Jeffrey Okereafor Chinedu</h4>
+                  <p className="text-muted-foreground">Founder & CEO</p>
+                </div>
+                <Button className="w-fit hover-lift" asChild>
+                  <Link to="/founder">
+                    Learn More <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </Button>
+              </CardContent>
+            </div>
+          </Card>
         </div>
       </section>
 
@@ -562,39 +596,6 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Founder Preview */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <Card className="max-w-4xl mx-auto overflow-hidden card-shadow">
-            <div className="grid md:grid-cols-2">
-              <div className="relative h-64 md:h-auto">
-                <img 
-                  src="https://cdn.pmnewsnigeria.com/wp-content/uploads/2024/10/4afa0da8-b1ad-4ab2-bcf0-6b5386b52b31.jpeg" 
-                  alt="Jeffrey Okereafor Chinedu"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <CardContent className="p-8 flex flex-col justify-center">
-                <h3 className="text-2xl font-bold mb-4">Meet Our Founder</h3>
-                <blockquote className="text-lg text-muted-foreground mb-6 italic">
-                  "Our aim is to revolutionize car ownership in Nigeria, and eventually across Africa. 
-                  We want to create a network of computerized showrooms that bring car buying into the 
-                  digital age while keeping customer service at the heart of it all."
-                </blockquote>
-                <div className="mb-6">
-                  <h4 className="font-bold">Jeffrey Okereafor Chinedu</h4>
-                  <p className="text-muted-foreground">Founder & CEO</p>
-                </div>
-                <Button className="w-fit hover-lift" asChild>
-                  <Link to="/founder">
-                    Learn More <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </div>
-          </Card>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-16 hero-gradient text-white">

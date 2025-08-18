@@ -87,7 +87,7 @@ const Founder: React.FC = () => {
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-6 py-12">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -142,7 +142,7 @@ const Founder: React.FC = () => {
           ))}
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-16">
           {/* Story Section */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -171,16 +171,11 @@ const Founder: React.FC = () => {
                   </p>
                   
                   <p>
-                    His forward-thinking approach led to the development of computerized showrooms equipped spaces that 
+                    He is forward-thinking approach led to the development of showrooms equipped spaces that 
                     allow customers to explore car options, view specifications, and make informed decisions in a seamless, 
                     interactive environment.
                   </p>
-                  
-                  <p>
-                    Today, customers enjoy flexible car financing options, with as little as 40% required upfront and the balance 
-                    spread across 6 to 24 months. In addition to sales, Jeffworldwide offers car importation and sourcing services, 
-                    backed by a six-month warranty on every vehicle.
-                  </p>
+                 
                 </div>
               </CardContent>
             </Card>

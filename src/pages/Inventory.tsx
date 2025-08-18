@@ -361,23 +361,25 @@ const Inventory: React.FC = () => {
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Car Inventory</h1>
+        <h1 className="text-3xl font-bold mb-2">For Sale</h1>
         <p className="text-muted-foreground">
           Find your perfect car from our extensive collection
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-6">
+      <div className="hidden gap-4 mb-6">
         <Button
           variant={activeTab === 'all' ? 'default' : 'outline'}
           onClick={() => setSearchParams({ tab: 'all' })}
+          className='hidden'
         >
           All Cars ({filteredCars.length})
         </Button>
         <Button
           variant={activeTab === 'favorites' ? 'default' : 'outline'}
           onClick={() => setSearchParams({ tab: 'favorites' })}
+          className='hidden'
         >
           <Heart className="w-4 h-4 mr-2" />
           Favorites ({favorites.length})
@@ -385,6 +387,7 @@ const Inventory: React.FC = () => {
         <Button
           variant={activeTab === 'compare' ? 'default' : 'outline'}
           onClick={() => setSearchParams({ tab: 'compare' })}
+          className='hidden'
         >
           <ShoppingCart className="w-4 h-4 mr-2" />
           Compare ({comparison.cars.length}/3)
@@ -392,7 +395,7 @@ const Inventory: React.FC = () => {
       </div>
 
       {/* Search and Controls */}
-      <div className="flex flex-col lg:flex-row gap-4 mb-6">
+      <div className="flex lg:flex-row gap-4 mb-6">
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
           <Input
@@ -403,7 +406,7 @@ const Inventory: React.FC = () => {
           />
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <Select value={`${sortBy}-${sortOrder}`} onValueChange={handleSortChange}>
             <SelectTrigger className="w-48">
               <SelectValue />
@@ -418,7 +421,7 @@ const Inventory: React.FC = () => {
             </SelectContent>
           </Select>
 
-          <div className="flex border rounded-md">
+          <div className="hidden lg:flex md:flex border rounded-md">
             <Button
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"

@@ -121,14 +121,11 @@ Please process my application. Thank you!`;
           transition={{ duration: 0.6 }}
           className="text-center mb-8 md:mb-12"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
-            <Calculator className="w-8 h-8 text-white" />
-          </div>
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
-            Interest-Free Car Loan
+            Our Loan Calculator
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Calculate your monthly payments with our Sharia-compliant financing
+            Calculate your monthly payments with our financing aid
           </p>
         </motion.div>
 
@@ -137,7 +134,6 @@ Please process my application. Thank you!`;
           <Card className="hover-lift h-fit">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Calculator className="w-5 h-5" />
                 Loan Details
               </CardTitle>
               <CardDescription>
@@ -162,7 +158,7 @@ Please process my application. Thank you!`;
                   />
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 ">
                   <Label htmlFor="downPayment">Down Payment ({downPayment}%)</Label>
                   <Slider
                     id="downPayment"
@@ -194,14 +190,14 @@ Please process my application. Thank you!`;
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="hidden grid-cols-1 md:grid-cols-2 gap-4">
                 {carMake && <div className="space-y-2">
                   <Label htmlFor="carMake">Make</Label>
                   <Input
                     id="carMake"
                     value={carMake}
                     onChange={(e) => setCarMake(e.target.value)}
-                    placeholder="e.g. Toyota"
+                    placeholder="e.g. Toyota" disabled
                   />
                 </div>}
                  {carModel && <div className="space-y-2">
@@ -210,18 +206,18 @@ Please process my application. Thank you!`;
                       id="carModel"
                       value={carModel}
                       onChange={(e) => setCarModel(e.target.value)}
-                      placeholder="e.g. Camry"
+                      placeholder="e.g. Camry" disabled
                     />
                   </div>}
                 </div>
 
-               {carYear && <div className="space-y-2">
+               {carYear && <div className="hidden space-y-2">
                   <Label htmlFor="carYear">Year</Label>
                   <Input
                     id="carYear"
                     value={carYear}
                     onChange={(e) => setCarYear(e.target.value)}
-                    placeholder="e.g. 2023"
+                    placeholder="e.g. 2023" disabled
                   />
                 </div>}
               </div>

@@ -68,7 +68,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-secondary mt-5 text-secondary-foreground">
       {/* Newsletter Section */}
-      <div className="border-b border-border">
+      <div className="border-b border-gray-600">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl font-bold mb-4">Join Our Customer Circle</h3>
@@ -210,17 +210,12 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-border">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground">
-              © 2024 Jeff Business Concept Worldwide Limited. All rights reserved.
+      <div className="w-[100vw] border-t border-gray-600">
+        <div className="w-full mx-auto px-4 py-6">
+          <div className="w-full text-center">
+            <p className="text-md text-muted-foreground">
+              © {new Date().getFullYear()} Jeff Business Concept Worldwide Limited. <br></br> All rights reserved.
             </p>
-            <div className="flex items-center space-x-4 mt-4 md:mt-0">
-              <span className="text-sm text-muted-foreground">
-                6-Month Warranty • 40% Down Payment • Flexible Financing
-              </span>
-            </div>
           </div>
         </div>
       </div>

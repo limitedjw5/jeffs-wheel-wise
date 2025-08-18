@@ -48,10 +48,10 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 hover-lift">
-              <div className="w-60 h-40 flex items-center justify-center">
-                {isDark ? <img src="/dark.png" alt="logo" className="w-50 h-15 text-white" /> :
-                <img src="/light.png" alt="logo" className="w-50 h-15 text-white" /> }
+          <Link to="/" className="flex items-center space-x-2">
+              <div className="w-60 flex items-center justify-center">
+                {isDark ? <img src="/light.png" alt="logo" className="w-50 h-15 text-white" /> :
+                <img src="/light.png" alt="logo" className="w-50 text-white" /> }
               </div>
           </Link>
 
@@ -61,9 +61,9 @@ const Header: React.FC = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-medium smooth-transition ${
+                className={`px-3 py-2 rounded-md text-sm font-bold font-sans smooth-transition ${
                   isActive(item.href)
-                    ? 'text-blue-400'
+                    ? 'text-blue-500'
                     : 'text-foreground'
                 }`}
               >
@@ -82,10 +82,19 @@ const Header: React.FC = () => {
                 Admin
               </Link>
             )}
+
+            <Button
+              variant="outline"
+              size="lg"
+              className="lg:hidden md:flex hover-lift"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </Button>
           </nav>
 
           {/* Actions */}
-          <div className="flex items-center space-x-2">
+          <div className="hidden items-center space-x-2">
             {/* Comparison Badge */}
             {comparison.cars.length > 0 && (
               <Link to="/inventory?tab=compare">

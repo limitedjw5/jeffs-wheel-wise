@@ -301,7 +301,7 @@ const CarDetails: React.FC = () => {
         <Button
           variant="outline"
           onClick={() => navigate(-1)}
-          className="mb-6 hover-lift"
+          className="mb-6 hover-lift hidden"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Inventory
