@@ -19,10 +19,11 @@ import {
 import { useCarStore } from '@/stores/useCarStore';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
-import { adminService } from '@/lib/adminServices';
+import { firebaseAdminService } from '@/lib/firebaseServices';
+import AddCarModal from './AddCarModal';
 
 const InventoryManagement: React.FC = () => {
-  const { cars, updateCar, deleteCar } = useCarStore();
+  const { cars, updateCar, deleteCar, addCar } = useCarStore();
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -46,7 +47,7 @@ const InventoryManagement: React.FC = () => {
       toast.success(`Car status updated to ${newStatus}`);
       
       // Log the action
-      await adminService.logAdminAction(
+      await firebaseAdminService.logAdminAction(
         user.uid,
         user.email || 'Unknown',
         `Changed car status to ${newStatus}`,
@@ -66,7 +67,7 @@ const InventoryManagement: React.FC = () => {
         toast.success('Car deleted successfully');
         
         // Log the action
-        await adminService.logAdminAction(
+        await firebaseAdminService.logAdminAction(
           user.uid,
           user.email || 'Unknown',
           'Deleted car from inventory',
@@ -90,7 +91,7 @@ const InventoryManagement: React.FC = () => {
       setSelectedCars([]);
       
       // Log the action
-      await adminService.logAdminAction(
+      await firebaseAdminService.logAdminAction(
         user.uid,
         user.email || 'Unknown',
         `Bulk status change to ${newStatus}`,
@@ -135,10 +136,7 @@ const InventoryManagement: React.FC = () => {
           <h2 className="text-2xl font-bold">Inventory Management</h2>
           <p className="text-muted-foreground">Manage your car inventory and track status</p>
         </div>
-        <Button>
-          <Plus className="w-4 h-4 mr-2" />
-          Add New Car
-        </Button>
+        <AddCarModal onCarAdded={addCar} />
       </div>
 
       {/* Filters and Search */}
@@ -251,6 +249,7 @@ const InventoryManagement: React.FC = () => {
                   <TableHead>Condition</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Featured</TableHead>
+                  <TableHead>Deal of Week</TableHead>
                   <TableHead>Created</TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
@@ -294,6 +293,11 @@ const InventoryManagement: React.FC = () => {
                     <TableCell>
                       {car.isFeatured && (
                         <Badge variant="secondary">Featured</Badge>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {(car as any).isDealOfTheWeek && (
+                        <Badge variant="default" className="bg-purple-500">Deal of Week</Badge>
                       )}
                     </TableCell>
                     <TableCell className="text-xs">

@@ -18,7 +18,7 @@ import {
   Eye
 } from 'lucide-react';
 import { useCarStore } from '@/stores/useCarStore';
-import { adminService, type MarketAnalysis } from '@/lib/adminServices';
+import { firebaseAdminService, type MarketAnalysis } from '@/lib/firebaseServices';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import InventoryManagement from './InventoryManagement';
@@ -37,7 +37,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     // Log admin access
     if (user) {
-      adminService.logAdminLogin(user.uid, user.email || 'Unknown');
+      firebaseAdminService.logAdminLogin(user.uid, user.email || 'Unknown');
     }
   }, [user]);
 
@@ -51,17 +51,11 @@ const AdminDashboard: React.FC = () => {
     
     setLoading(true);
     try {
-      const analysis = await adminService.generateMarketAnalysis(cars, user.uid, user.email || 'Unknown');
+      const analysis = await firebaseAdminService.generateMarketAnalysis(cars, user.uid, user.email || 'Unknown');
       setMarketAnalysis(analysis);
       toast.success('Market analysis generated successfully');
       
-      // Log the action
-      await adminService.logAdminAction(
-        user.uid, 
-        user.email || 'Unknown', 
-        'Generated market analysis',
-        { totalCars: cars.length, timestamp: new Date().toISOString() }
-      );
+      // Action already logged in the service
     } catch (error) {
       toast.error('Failed to generate market analysis');
       console.error(error);
@@ -75,17 +69,11 @@ const AdminDashboard: React.FC = () => {
     
     setLoading(true);
     try {
-      const review = await adminService.generateInventoryReview(cars, user.uid, user.email || 'Unknown');
+      const review = await firebaseAdminService.generateInventoryReview(cars, user.uid, user.email || 'Unknown');
       setInventoryReview(review);
       toast.success('Inventory review generated successfully');
       
-      // Log the action
-      await adminService.logAdminAction(
-        user.uid, 
-        user.email || 'Unknown', 
-        'Generated inventory review',
-        { activeCars: activeCars.length, timestamp: new Date().toISOString() }
-      );
+      // Action already logged in the service
     } catch (error) {
       toast.error('Failed to generate inventory review');
       console.error(error);
@@ -218,9 +206,9 @@ const AdminDashboard: React.FC = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="inventory">Inventory</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
+            {/* <TabsTrigger value="users">Users</TabsTrigger> */}
             <TabsTrigger value="logs">Logs</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            {/* <TabsTrigger value="settings">Settings</TabsTrigger> */}
           </TabsList>
 
           <TabsContent value="overview" className="mt-6">

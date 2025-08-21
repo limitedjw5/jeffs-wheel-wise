@@ -87,7 +87,7 @@ const Founder: React.FC = () => {
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-6 py-12">
+      <div className="container mx-auto px-6">
         {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -99,14 +99,11 @@ const Founder: React.FC = () => {
             <img
               src="https://cdn.pmnewsnigeria.com/wp-content/uploads/2024/10/4afa0da8-b1ad-4ab2-bcf0-6b5386b52b31.jpeg"
               alt="Jeffrey Okereafor Chinedu - Founder & Director"
-              className="w-48 h-48 mx-auto rounded-full object-cover shadow-2xl ring-4 ring-primary/20"
+              className="w-52 h-52 mx-auto rounded-full object-cover shadow-2xl ring-4 ring-primary/20"
             />
-            <div className="absolute -bottom-2 -right-2 bg-primary text-primary-foreground rounded-full p-3">
-              <Award className="w-6 h-6" />
-            </div>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
+          <h1 className="text-4xl md:text-2xl font-bold mb-4 text-gradient">
             Jeffrey Okereafor Chinedu
           </h1>
           

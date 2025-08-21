@@ -432,18 +432,18 @@ const Index: React.FC = () => {
       </section>
       
       {/* Founder Preview */}
-      <section className="py-16">
+      <section className="py-4">
         <div className="container mx-auto px-4">
           <Card className="max-w-4xl mx-auto overflow-hidden card-shadow">
             <div className="grid md:grid-cols-2">
-              <div className="relative h-64 md:h-auto">
+              <div className="relative md:h-auto">
                 <img 
-                  src="https://cdn.pmnewsnigeria.com/wp-content/uploads/2024/10/4afa0da8-b1ad-4ab2-bcf0-6b5386b52b31.jpeg" 
+                  src="https://i.ibb.co/7JyCqvp9/Screenshot-2025-08-21-at-12-27-04-PM.png" 
                   alt="Jeffrey Okereafor Chinedu"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <CardContent className="p-8 flex flex-col justify-center">
+              <CardContent className="px-8 flex flex-col justify-center">
                 <h3 className="text-2xl font-bold mb-4">Meet Our Founder</h3>
                 <blockquote className="text-lg text-muted-foreground mb-6 italic">
                   "Our aim is to revolutionize car ownership in Nigeria, and eventually across Africa. 
@@ -456,7 +456,7 @@ const Index: React.FC = () => {
                 </div>
                 <Button className="w-fit hover-lift" asChild>
                   <Link to="/founder">
-                    Learn More <ArrowRight className="w-4 h-4 ml-2" />
+                    Read More <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
               </CardContent>
@@ -618,7 +618,7 @@ const Index: React.FC = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4 h-auto hover-lift"
+              className="border-white text-black hover:bg-white hover:text-primary text-lg px-8 py-4 h-auto hover-lift"
               asChild
             >
               <Link to="/ai-recommend">Get AI Recommendation</Link>

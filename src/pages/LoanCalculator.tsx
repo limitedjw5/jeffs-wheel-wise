@@ -113,7 +113,7 @@ Please process my application. Thank you!`;
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -122,7 +122,7 @@ Please process my application. Thank you!`;
           className="text-center mb-8 md:mb-12"
         >
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
-            Our Loan Calculator
+            Car Loan Calculator
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
             Calculate your monthly payments with our financing aid

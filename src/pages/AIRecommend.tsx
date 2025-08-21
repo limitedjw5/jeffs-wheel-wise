@@ -194,7 +194,7 @@ const AIRecommend: React.FC = () => {
 
   return (
     <div className="min-h-screen pt-20 bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -202,9 +202,6 @@ const AIRecommend: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center mx-auto mb-6">
-            <Brain className="w-8 h-8 text-white" />
-          </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
             AI Car Recommendations
           </h1>

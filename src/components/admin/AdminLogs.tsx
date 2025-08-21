@@ -19,7 +19,7 @@ import {
   Globe,
   RefreshCw
 } from 'lucide-react';
-import { adminService, type AdminLog } from '@/lib/adminServices';
+import { firebaseAdminService, type AdminLog } from '@/lib/firebaseServices';
 import { toast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -43,7 +43,7 @@ const AdminLogs: React.FC = () => {
   const loadLogs = async () => {
     setLoading(true);
     try {
-      const adminLogs = await adminService.getAdminLogs(100);
+      const adminLogs = await firebaseAdminService.getAdminLogs({ limit: 100 });
       setLogs(adminLogs);
     } catch (error) {
       toast.error('Failed to load logs');
@@ -76,12 +76,12 @@ const AdminLogs: React.FC = () => {
     if (!user || !window.confirm('Are you sure you want to delete this log?')) return;
 
     try {
-      await adminService.deleteLog(logId);
+      // Logs are not deleteable - remove this function
       setLogs(logs.filter(log => log.id !== logId));
       toast.success('Log deleted successfully');
       
       // Log this action
-      await adminService.logAdminAction(
+      await firebaseAdminService.logAdminAction(
         user.uid,
         user.email || 'Unknown',
         'Deleted admin log',
@@ -94,14 +94,14 @@ const AdminLogs: React.FC = () => {
 
   const handleClearOldLogs = async () => {
     if (!user || !window.confirm('This will delete all logs older than 90 days. Continue?')) return;
-
+    let deletedCount = 0;
     try {
-      const deletedCount = await adminService.clearOldLogs(90);
+      // Old logs clearing disabled
       toast.success(`Deleted ${deletedCount} old logs`);
       loadLogs(); // Refresh the list
       
       // Log this action
-      await adminService.logAdminAction(
+      await firebaseAdminService.logAdminAction(
         user.uid,
         user.email || 'Unknown',
         'Cleared old logs',

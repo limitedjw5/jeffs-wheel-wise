@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Car, Menu, X, Moon, Sun, User, Heart, ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useThemeStore } from '@/stores/useThemeStore';
-import { useCarStore } from '@/stores/useCarStore';
-import { useAuth } from '@/contexts/AuthContext';
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Menu,
+  X,
+  Moon,
+  Sun,
+  User,
+  Heart,
+  ShoppingCart,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useThemeStore } from "@/stores/useThemeStore";
+import { useCarStore } from "@/stores/useCarStore";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,16 +30,16 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'Inventory', href: '/inventory' },
-    { name: 'AI Recommender', href: '/ai-recommend' },
-    { name: 'Loan Calculator', href: '/loan-calculator' },
-    { name: 'Our Founder', href: '/founder' },
+    { name: "Home", href: "/" },
+    { name: "Inventory", href: "/inventory" },
+    { name: "AI Recommender", href: "/ai-recommend" },
+    { name: "Loan Calculator", href: "/loan-calculator" },
+    { name: "Our Founder", href: "/founder" },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/' && location.pathname === '/') return true;
-    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    if (path === "/" && location.pathname === "/") return true;
+    if (path !== "/" && location.pathname.startsWith(path)) return true;
     return false;
   };
 
@@ -39,7 +47,7 @@ const Header: React.FC = () => {
     try {
       await logout();
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     }
   };
 
@@ -47,54 +55,46 @@ const Header: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+          {/* Left: Logo */}
           <Link to="/" className="flex items-center space-x-2">
-              <div className="w-60 flex items-center justify-center">
-                {isDark ? <img src="/light.png" alt="logo" className="w-50 h-15 text-white" /> :
-                <img src="/light.png" alt="logo" className="w-50 text-white" /> }
-              </div>
+            <div className="w-40 flex items-center">
+              {isDark ? (
+                <img src="/light.png" alt="logo" className="h-10" />
+              ) : (
+                <img src="/light.png" alt="logo" className="h-10" />
+              )}
+            </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`px-3 py-2 rounded-md text-sm font-bold font-sans smooth-transition ${
-                  isActive(item.href)
-                    ? 'text-blue-500'
-                    : 'text-foreground'
-                }`}
-              >
-                {item.name}
-              </Link>
-            ))}
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className={`px-3 py-2 rounded-md text-sm font-medium smooth-transition ${
-                  isActive('/admin')
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-muted hover:text-accent-foreground'
-                }`}
-              >
-                Admin
-              </Link>
-            )}
+          {/* Right: Nav (desktop) + Actions */}
+          <div className="flex items-center space-x-4">
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-3">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`px-3 py-2 rounded-md text-sm font-bold smooth-transition ${
+                    isActive(item.href) ? "text-blue-500" : "text-foreground"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className={`px-3 py-2 rounded-md text-sm font-medium smooth-transition ${
+                    isActive("/admin")
+                      ? "bg-primary text-primary-foreground"
+                      : "text-foreground hover:bg-muted hover:text-accent-foreground"
+                  }`}
+                >
+                  Admin
+                </Link>
+              )}
+            </nav>
 
-            <Button
-              variant="outline"
-              size="lg"
-              className="lg:hidden md:flex hover-lift"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            </Button>
-          </nav>
-
-          {/* Actions */}
-          <div className="hidden items-center space-x-2">
             {/* Comparison Badge */}
             {comparison.cars.length > 0 && (
               <Link to="/inventory?tab=compare">
@@ -108,7 +108,7 @@ const Header: React.FC = () => {
             )}
 
             {/* Favorites Badge */}
-            {favorites.length > 0 && (
+            {/* {favorites.length > 0 && (
               <Link to="/inventory?tab=favorites">
                 <Button variant="outline" size="sm" className="relative hover-lift">
                   <Heart className="w-4 h-4" />
@@ -117,7 +117,7 @@ const Header: React.FC = () => {
                   </span>
                 </Button>
               </Link>
-            )}
+            )} */}
 
             {/* Theme Toggle */}
             <Button
@@ -129,7 +129,7 @@ const Header: React.FC = () => {
               {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </Button>
 
-            {/* Admin Access */}
+            {/* Admin Dropdown */}
             {isAdmin && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -141,7 +141,9 @@ const Header: React.FC = () => {
                   <DropdownMenuItem disabled>
                     <div className="flex flex-col">
                       <span className="font-medium">{user?.email}</span>
-                      <span className="text-xs text-muted-foreground">Administrator</span>
+                      <span className="text-xs text-muted-foreground">
+                        Administrator
+                      </span>
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -162,53 +164,66 @@ const Header: React.FC = () => {
               className="lg:hidden hover-lift"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </Button>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.nav
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden border-t border-border py-4"
-            >
-              <div className="flex flex-col space-y-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium smooth-transition ${
-                      isActive(item.href)
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-foreground hover:bg-muted hover:text-accent-foreground'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                {isAdmin && (
-                  <Link
-                    to="/admin"
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`px-3 py-2 rounded-md text-sm font-medium smooth-transition ${
-                      isActive('/admin')
-                        ? 'bg-primary text-primary-foreground'
-                        : 'text-foreground hover:bg-muted hover:text-accent-foreground'
-                    }`}
-                  >
-                    Admin Dashboard
-                  </Link>
-                )}
-              </div>
-            </motion.nav>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Mobile Navigation Modal */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="inset-0 z-50 flex items-center justify-center bg-transparent lg:hidden"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="rounded-2xl shadow-xl w-80 p-6 mt-5 flex flex-col space-y-4 text-center"
+            >
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-md text-lg hover:text-black font-semibold ${
+                    isActive(item.href)
+                      ? "text-blue-500"
+                      : "text-foreground hover:text-accent-foreground"
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              ))}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`block px-3 py-2 rounded-md text-lg font-semibold ${
+                    isActive("/admin")
+                      ? "text-blue-500"
+                      : "text-foreground hover:text-accent-foreground"
+                  }`}
+                >
+                  Admin Dashboard
+                </Link>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsMenuOpen(false)}
+                className="mt-4"
+              >
+                Close
+              </Button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
